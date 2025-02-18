@@ -3,6 +3,7 @@ package com.evento.services;
 import com.evento.dtos.UsuarioDTO;
 import com.evento.models.Usuario;
 import com.evento.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class UsuarioService {
         return converterUsuarioParaUsuarioDTO(usuario);
 
     }
+
     public UsuarioDTO converterUsuarioParaUsuarioDTO(Usuario usuario) {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setId(usuario.getId());
@@ -44,4 +46,25 @@ public class UsuarioService {
         usuario.setVerficado(usuariodto.isVerificado());
         return usuario;
     }
+
+    @Transactional
+    public void deletarUsuario(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new RuntimeException("Usuário não encontrado com o ID: " + id);
+        }
+        usuarioRepository.deleteById(id);
+    }
+
+    public UsuarioDTO atualizarUsuario(UsuarioDTO usuarioDTO) {
+        Usuario usuario = usuarioRepository.findById(usuarioDTO.getId()).orElseThrow(()-> new IllegalArgumentException("Usuário não encontrado"));
+        usuario = conveterUsuarioDTOparaUsuario(usuarioDTO);
+        usuarioRepository.save(usuario);
+        return converterUsuarioParaUsuarioDTO(usuario);
+    }
+    public UsuarioDTO buscarUsuarioPorEmail(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        return converterUsuarioParaUsuarioDTO(usuario);
+    }
 }
+
+
