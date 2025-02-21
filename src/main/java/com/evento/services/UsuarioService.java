@@ -1,23 +1,28 @@
 package com.evento.services;
 
 import com.evento.dtos.UsuarioDTO;
+import com.evento.exceptions.BussinesException;
 import com.evento.models.Usuario;
 import com.evento.repositories.UsuarioRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UsuarioService {
-
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public UsuarioDTO cadastrarUsuario(UsuarioDTO usuarioDTO) {
-        Usuario usuario = conveterUsuarioDTOparaUsuario(usuarioDTO);
+    public UsuarioDTO cadastrarUsuario(UsuarioDTO usuarioDTO){
+
+        Usuario usuarioEmail = usuarioRepository.findByEmail(usuarioDTO.getEmail());
+        if(Objects.nonNull(usuarioEmail)){
+            throw new BussinesException("Usuário com este email já existe");
+        }
+        Usuario usuario = converterUsuarioDTOParaUsuario(usuarioDTO);
         usuario = usuarioRepository.save(usuario);
         return converterUsuarioParaUsuarioDTO(usuario);
-
     }
 
     public UsuarioDTO converterUsuarioParaUsuarioDTO(Usuario usuario) {
@@ -29,42 +34,51 @@ public class UsuarioService {
         usuarioDTO.setCpf(usuario.getCpf());
         usuarioDTO.setDataNascimento(usuario.getDataNascimento());
         usuarioDTO.setPerfil(usuario.getPerfil());
-        usuarioDTO.setVerificado(usuario.isVerficado());
+        usuarioDTO.setVerificado(usuario.isVerificado());
         return usuarioDTO;
-
     }
 
-    public Usuario conveterUsuarioDTOparaUsuario(UsuarioDTO usuariodto) {
+    public Usuario converterUsuarioDTOParaUsuario(UsuarioDTO usuarioDTO){
         Usuario usuario = new Usuario();
-        usuario.setId(usuariodto.getId());
-        usuario.setNome(usuariodto.getNome());
-        usuario.setEmail(usuariodto.getEmail());
-        usuario.setSenha(usuariodto.getSenha());
-        usuario.setCpf(usuariodto.getCpf());
-        usuario.setDataNascimento(usuariodto.getDataNascimento());
-        usuario.setPerfil(usuariodto.getPerfil());
-        usuario.setVerficado(usuariodto.isVerificado());
+        usuario.setId(usuarioDTO.getId());
+        usuario.setNome(usuarioDTO.getNome());
+        usuario.setEmail(usuarioDTO.getEmail());
+        usuario.setSenha(usuarioDTO.getSenha());
+        usuario.setCpf(usuarioDTO.getCpf());
+        usuario.setDataNascimento(usuarioDTO.getDataNascimento());
+        usuario.setPerfil(usuarioDTO.getPerfil());
+        usuario.setVerificado(usuarioDTO.isVerificado());
         return usuario;
     }
 
-    @Transactional
-    public void deletarUsuario(Long id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado com o ID: " + id);
-        }
+    public void deletarUsuario(Long id){
         usuarioRepository.deleteById(id);
     }
 
-    public UsuarioDTO atualizarUsuario(UsuarioDTO usuarioDTO) {
-        Usuario usuario = usuarioRepository.findById(usuarioDTO.getId()).orElseThrow(()-> new IllegalArgumentException("Usuário não encontrado"));
-        usuario = conveterUsuarioDTOparaUsuario(usuarioDTO);
+    public UsuarioDTO buscarUsuarioPorId(Long id){
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new BussinesException("Usuário não encontrado"));
+        return converterUsuarioParaUsuarioDTO(usuario);
+    }
+
+    public UsuarioDTO atualizarUsuario(UsuarioDTO usuarioDTO){
+
+        if (Objects.isNull(usuarioDTO.getId()))
+            throw new BussinesException("Id não pode ser nulo");
+
+        Usuario usuario = usuarioRepository.findById(usuarioDTO.getId())
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Usuário não encontrado"));
+
+        usuario = converterUsuarioDTOParaUsuario(usuarioDTO);
         usuarioRepository.save(usuario);
         return converterUsuarioParaUsuarioDTO(usuario);
     }
-    public UsuarioDTO buscarUsuarioPorEmail(String email) {
+
+    public UsuarioDTO buscarUsuarioPorEmail(String email){
         Usuario usuario = usuarioRepository.findByEmail(email);
         return converterUsuarioParaUsuarioDTO(usuario);
     }
+
+
 }
-
-
