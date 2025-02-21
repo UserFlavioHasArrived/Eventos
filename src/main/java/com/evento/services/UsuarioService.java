@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+import static java.util.Objects.*;
+
 @Service
 public class UsuarioService {
     @Autowired
@@ -17,7 +19,7 @@ public class UsuarioService {
     public UsuarioDTO cadastrarUsuario(UsuarioDTO usuarioDTO){
 
         Usuario usuarioEmail = usuarioRepository.findByEmail(usuarioDTO.getEmail());
-        if(Objects.nonNull(usuarioEmail)){
+        if(nonNull(usuarioEmail)){
             throw new BussinesException("Usuário com este email já existe");
         }
         Usuario usuario = converterUsuarioDTOParaUsuario(usuarioDTO);
@@ -63,7 +65,7 @@ public class UsuarioService {
 
     public UsuarioDTO atualizarUsuario(UsuarioDTO usuarioDTO){
 
-        if (Objects.isNull(usuarioDTO.getId()))
+        if (isNull(usuarioDTO.getId()))
             throw new BussinesException("Id não pode ser nulo");
 
         Usuario usuario = usuarioRepository.findById(usuarioDTO.getId())
