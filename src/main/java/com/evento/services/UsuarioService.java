@@ -13,15 +13,24 @@ import static java.util.Objects.*;
 
 @Service
 public class UsuarioService {
+    private static final String MSG_EMAIL = "Usuário já cadastrado com email: %s.";
     @Autowired
     UsuarioRepository usuarioRepository;
 
     public UsuarioDTO cadastrarUsuario(UsuarioDTO usuarioDTO){
 
-        Usuario usuarioEmail = usuarioRepository.findByEmail(usuarioDTO.getEmail());
-        if(nonNull(usuarioEmail)){
-            throw new BussinesException("Usuário com este email já existe");
+        Usuario usuarioEmail = usuarioRepository
+                .findByEmail(usuarioDTO.getEmail());
+
+        if (nonNull(usuarioEmail)){
+            throw new BussinesException(
+                    String.format(MSG_EMAIL,usuarioDTO.getEmail()));
         }
+        Usuario usuariocpf = usuarioRepository.findByCpf(usuarioDTO.getCpf());
+        if (nonNull(usuariocpf)){
+            throw new BussinesException("Usuário já cadastrado com cpf: "+usuarioDTO.getCpf());
+        }
+
         Usuario usuario = converterUsuarioDTOParaUsuario(usuarioDTO);
         usuario = usuarioRepository.save(usuario);
         return converterUsuarioParaUsuarioDTO(usuario);
@@ -70,7 +79,7 @@ public class UsuarioService {
 
         Usuario usuario = usuarioRepository.findById(usuarioDTO.getId())
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Usuário não encontrado"));
+                        new BussinesException("Usuário não encontrado"));
 
         usuario = converterUsuarioDTOParaUsuario(usuarioDTO);
         usuarioRepository.save(usuario);
