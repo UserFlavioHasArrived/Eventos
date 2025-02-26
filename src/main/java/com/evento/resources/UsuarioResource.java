@@ -37,9 +37,5 @@ public class UsuarioResource {
         return ResponseEntity.ok(usuarioService.atualizarUsuario(usuarioDTO));
     }
 
-    @GetMapping("/buscar")
-    public ResponseEntity<UsuarioDTO> buscarUsuarioPorEmail(@RequestParam String email){
-        return ResponseEntity.ok(usuarioService.buscarUsuarioPorEmail(email));
-    }
 
 }
