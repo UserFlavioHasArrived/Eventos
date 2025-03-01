@@ -52,9 +52,13 @@ public class CidadeService {
         cidadeRepository.save(cidade);//Converte a entidade para o DTO
         return converterCidadeParaCidadeDTO(cidade);
     }
+    public CidadeDTO buscarCidadePorNome(String nome) {
+        Cidade cidade = cidadeRepository.findById(nome).orElseThrow(() ->
+                new BussinesException(MSG_CIDADE));
+        return converterCidadeParaCidadeDTO(cidade);
+    }
 
+    }
 
-
-}
 
 

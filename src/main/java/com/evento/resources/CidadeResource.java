@@ -29,5 +29,9 @@ public class CidadeResource {
     public ResponseEntity<CidadeDTO> atualizarCidade(@RequestBody CidadeDTO cidadeDTO) {
         return ResponseEntity.ok(cidadeService.atualizarCidade(cidadeDTO));
     }
+    @GetMapping("/buscar")
+    public ResponseEntity<CidadeDTO> atualizarCidadePorId(@PathVariable Long id) {
+        return ResponseEntity.ok(cidadeService.atualizarCidadeDTOPorNome(nome));
+    }
 
 }
