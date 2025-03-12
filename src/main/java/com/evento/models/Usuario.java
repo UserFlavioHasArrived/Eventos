@@ -1,8 +1,10 @@
 package com.evento.models;
 
+import com.evento.enums.Perfil;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +21,9 @@ public class Usuario {
     private String cpf;
     @Column(name = "data_nascimento")
     private Date dataNascimento;
-    private String perfil;
+    @Enumerated(EnumType.STRING)
+    private List<Perfil> perfis;
+
     private boolean verificado;
 
     public Usuario() {}
@@ -32,7 +36,7 @@ public class Usuario {
         this.senha = senha;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
-        this.perfil = perfil;
+        this.perfis = perfis;
         this.verificado = verificado;
     }
 
@@ -84,12 +88,12 @@ public class Usuario {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getPerfil() {
-        return perfil;
+    public List <Perfil> getPerfis() {
+        return perfis;
     }
 
-    public void setPerfil(String perfil) {
-        this.perfil = perfil;
+    public void setPerfis(List<Perfil> perfis) {
+        this.perfis = perfis;
     }
 
     public boolean isVerificado() {

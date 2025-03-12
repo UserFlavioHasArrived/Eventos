@@ -30,8 +30,8 @@ public class CidadeResource {
         return ResponseEntity.ok(cidadeService.atualizarCidade(cidadeDTO));
     }
     @GetMapping("/buscar")
-    public ResponseEntity<CidadeDTO> atualizarCidadePorId(@PathVariable Long id) {
-        return ResponseEntity.ok(cidadeService.atualizarCidadeDTOPorNome(nome));
+    public ResponseEntity<CidadeDTO> buscarCidadePorId(@PathVariable String nome) {
+        return ResponseEntity.ok(cidadeService.buscarCidadePorNome(nome));
     }
 
 }
