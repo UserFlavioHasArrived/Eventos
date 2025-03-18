@@ -7,10 +7,9 @@ import jakarta.persistence.Enumerated;
 public class CidadeDTO {
     private Long id;
     private String nome;
-    @Enumerated(EnumType.STRING)
     private Estado estado;
 
-    public CidadeDTO() {}
+    public CidadeDTO(){}
 
     public CidadeDTO(Long id, String nome, Estado estado) {
         this.id = id;

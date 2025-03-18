@@ -45,18 +45,17 @@ public class UsuarioSpec {
                     nonNull(usuarioRepository
                             .findByEmail(usuarioDTO.getEmail()));
 
-            if (encontrouUsuarioComEmailInformado)
+            if(encontrouUsuarioComEmailInformado)
                 throw new BussinesException(String.format(MSG_EMAIL,
                         usuarioDTO.getEmail()));
-
-
         }
     }
-    public void verificarCPfEmUso(Usuario usuario, UsuarioDTO usuarioDTO) {
-            if ((!(usuario.getCpf().equals(usuarioDTO.getCpf())))
-                    && (nonNull(usuarioRepository.findByCpf(usuarioDTO.getCpf())))){
-                throw new BussinesException(String.format(MSG_CPF,
-                        usuarioDTO.getCpf()));
-            }
+
+    public void verificarCpfEmUso(Usuario usuario, UsuarioDTO usuarioDTO) {
+        if ((!(usuario.getCpf().equals(usuarioDTO.getCpf())))
+                && (nonNull(usuarioRepository.findByCpf(usuarioDTO.getCpf())))){
+            throw new BussinesException(String.format(MSG_CPF,
+                    usuarioDTO.getCpf()));
         }
     }
+}

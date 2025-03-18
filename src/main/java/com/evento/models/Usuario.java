@@ -21,6 +21,7 @@ public class Usuario {
     private String cpf;
     @Column(name = "data_nascimento")
     private Date dataNascimento;
+
     @Enumerated(EnumType.STRING)
     private List<Perfil> perfis;
 
@@ -28,8 +29,8 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(Long id, String nome, String email, String senha, String cpf, Date dataNascimento, String perfil,
-                   boolean verificado) {
+    public Usuario(Long id, String nome, String email, String senha, String cpf,
+                   Date dataNascimento, List<Perfil> perfis, boolean verificado) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -88,7 +89,7 @@ public class Usuario {
         this.dataNascimento = dataNascimento;
     }
 
-    public List <Perfil> getPerfis() {
+    public List<Perfil> getPerfis() {
         return perfis;
     }
 
