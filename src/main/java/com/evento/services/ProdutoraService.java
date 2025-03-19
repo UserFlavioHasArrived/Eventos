@@ -19,7 +19,7 @@ public class ProdutoraService {
         return converterProdutoraParaProdutoraDTO(produtora);
     }
 
-    private ProdutoraDTO converterProdutoraParaProdutoraDTO(Produtora produtora) {
+    ProdutoraDTO converterProdutoraParaProdutoraDTO(Produtora produtora) {
         ProdutoraDTO produtoraDTO = new ProdutoraDTO();
         produtoraDTO.setId(produtora.getId());
         produtoraDTO.setNome(produtora.getNome());
@@ -27,7 +27,7 @@ public class ProdutoraService {
         return produtoraDTO;
     }
 
-    private Produtora converterProdutoraDTOParaProdutora(ProdutoraDTO produtoraDTO) {
+    public Produtora converterProdutoraDTOParaProdutora(ProdutoraDTO produtoraDTO) {
         Produtora produtora = new Produtora();
         produtora.setId(produtoraDTO.getId());
         produtora.setNome(produtoraDTO.getNome());
